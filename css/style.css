@@ -1,0 +1,189 @@
+/* 頁面基礎樣式 (深色電影風格) */
+:root {
+  --bg-color: #0f0f0f;
+  --panel-bg: #1a1a1a;
+  --text-main: #f0f0f0;
+  --text-sub: #888;
+  --accent: #d4af37; /* 金色點綴 */
+  --border: #333;
+}
+
+body {
+  font-family: "Microsoft JhengHei", "Segoe UI", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* 標題區 */
+header {
+  margin: 30px 0;
+  text-align: center;
+}
+h1 {
+  font-weight: 300;
+  letter-spacing: 3px;
+  margin: 0;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 10px;
+}
+
+/* 佈局容器 */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 20px;
+  flex: 1; /* 讓 footer 自然置底 */
+}
+
+/* 左側控制面板 */
+.controls {
+  flex: 1;
+  min-width: 300px;
+  max-width: 380px;
+  background: var(--panel-bg);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  height: fit-content;
+}
+
+/* 右側預覽區 */
+.preview {
+  flex: 3;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 表單元素通用 */
+.group {
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+}
+.group:last-child {
+  border-bottom: none;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.tips {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* 自定義上傳按鈕 */
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  background: #252525;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: #ccc;
+}
+
+/* 選項按鈕組 */
+.radio-group {
+  display: flex;
+  gap: 15px;
+}
+.radio-btn {
+  flex: 1;
+  position: relative;
+}
+.radio-btn input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+.radio-btn span {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  background: #252525;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.9rem;
+}
+.radio-btn input:checked + span {
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  border-color: var(--accent);
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  background: #252525;
+  border: 1px solid var(--border);
+  color: white;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* 下載按鈕 */
+.btn-download {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #d4af37, #aa8c2c);
+  color: #111;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 10px;
+}
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* 畫布 Canvas */
+canvas {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #333;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  cursor: grab; /* 預設手型游標 */
+  background-color: #000;
+}
+canvas:active {
+  cursor: grabbing; /* 抓取時的游標 */
+}
+
+/* 頁尾 */
+footer {
+  margin-top: 50px;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  background-color: #0a0a0a;
+  color: #555;
+  font-size: 0.85rem;
+  border-top: 1px solid #222;
+}

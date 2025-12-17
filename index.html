@@ -4,243 +4,109 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JustPlayTogether 電影氛圍編輯器</title>
-    <style>
-      /* 頁面基礎樣式 (黑色系) */
-      :root {
-        --bg-color: #121212;
-        --panel-bg: #1e1e1e;
-        --text-main: #e0e0e0;
-        --text-sub: #a0a0a0;
-        --accent: #4a90e2;
-        --border: #333;
-      }
-
-      body {
-        font-family: "Microsoft JhengHei", "Segoe UI", sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-main);
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-      }
-
-      h2 {
-        margin-bottom: 20px;
-        font-weight: 300;
-        letter-spacing: 1px;
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 10px;
-      }
-
-      /* 佈局容器 */
-      .container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-        justify-content: center;
-        width: 100%;
-        max-width: 1200px;
-      }
-
-      /* 左側控制面板 */
-      .controls {
-        flex: 1;
-        min-width: 320px;
-        max-width: 400px;
-        background: var(--panel-bg);
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        height: fit-content;
-      }
-
-      /* 右側預覽區 */
-      .preview {
-        flex: 2;
-        min-width: 320px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-      }
-
-      /* 表單元素 */
-      .group {
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 15px;
-      }
-      .group:last-child {
-        border-bottom: none;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--text-sub);
-        font-size: 0.9rem;
-        font-weight: bold;
-      }
-
-      /* 檔案上傳按鈕美化 */
-      input[type="file"] {
-        width: 100%;
-        padding: 8px;
-        background: #2a2a2a;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        color: white;
-      }
-
-      select {
-        width: 100%;
-        padding: 10px;
-        background: #2a2a2a;
-        border: 1px solid var(--border);
-        color: white;
-        border-radius: 4px;
-        font-size: 1rem;
-      }
-
-      /* Radio 按鈕樣式 */
-      .radio-options {
-        display: flex;
-        gap: 15px;
-      }
-      .radio-label {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        background: #2a2a2a;
-        padding: 8px 12px;
-        border-radius: 4px;
-        border: 1px solid var(--border);
-        transition: 0.2s;
-      }
-      .radio-label:hover {
-        background: #333;
-      }
-      .radio-label input {
-        margin-right: 8px;
-      }
-
-      /* 下載按鈕 */
-      .btn-download {
-        width: 100%;
-        padding: 15px;
-        background: var(--accent);
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-top: 10px;
-      }
-      .btn-download:hover {
-        background: #357abd;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
-      }
-
-      /* 畫布 Canvas */
-      canvas {
-        max-width: 100%;
-        height: auto;
-        border: 1px solid #444;
-        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-        /* 透明背景格線 */
-        background-image: linear-gradient(45deg, #222 25%, transparent 25%),
-          linear-gradient(-45deg, #222 25%, transparent 25%),
-          linear-gradient(45deg, transparent 75%, #222 75%),
-          linear-gradient(-45deg, transparent 75%, #222 75%);
-        background-size: 20px 20px;
-        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-      }
-
-      .tips {
-        font-size: 0.8rem;
-        color: #666;
-        margin-top: 5px;
-        font-style: italic;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <h2>JustPlayTogether 電影氛圍編輯器</h2>
+    <header>
+      <h1>JustPlayTogether 電影氛圍編輯器</h1>
+    </header>
 
     <div class="container">
       <div class="controls">
         <div class="group">
-          <label>1. 選擇遊戲截圖 (底圖)</label>
+          <label>1. 上傳截圖</label>
           <input type="file" id="uploadImg" accept="image/*" />
+          <div class="tips">
+            支援 JPG, PNG。匯入後可直接在右側畫布「拖曳圖片」調整位置。
+          </div>
         </div>
 
         <div class="group">
-          <label>2. 裁切比例 (電影黑邊)</label>
-          <div class="radio-options">
-            <label class="radio-label">
-              <input type="radio" name="ratio" value="16:9" checked /> 16:9
-              (全螢幕)
+          <label>2. 選擇比例</label>
+          <div class="radio-group">
+            <label class="radio-btn">
+              <input type="radio" name="ratio" value="16:9" checked />
+              <span>16:9 標準</span>
             </label>
-            <label class="radio-label">
-              <input type="radio" name="ratio" value="2.35:1" /> 2.35:1
-              (電影黑邊)
+            <label class="radio-btn">
+              <input type="radio" name="ratio" value="2.35:1" />
+              <span>2.35:1 電影</span>
             </label>
           </div>
-          <div class="tips">* 2.35:1 會自動添加上下黑邊遮罩</div>
         </div>
 
         <div class="group">
-          <label>3. 上傳浮水印 (PNG)</label>
-          <input type="file" id="uploadLogo" accept="image/png" />
-          <div class="tips">* 建議使用背景透明的 PNG 檔</div>
+          <label>3. 選擇浮水印樣式</label>
+          <div class="radio-group">
+            <label class="radio-btn">
+              <input type="radio" name="logoStyle" value="logo1.png" checked />
+              <span>黑色樣式</span>
+            </label>
+            <label class="radio-btn">
+              <input type="radio" name="logoStyle" value="logo2.png" />
+              <span>白色樣式</span>
+            </label>
+          </div>
+          <div class="tips" style="color: #d4af37">
+            * 請確保 logo1.png 與 logo2.png 已放在同資料夾
+          </div>
         </div>
 
         <div class="group">
-          <label>4. 浮水印大小</label>
-          <select id="logoSize">
-            <option value="0.10">小 (寬度 10%)</option>
-            <option value="0.20" selected>中 (寬度 20%)</option>
-            <option value="0.30">大 (寬度 30%)</option>
-          </select>
-        </div>
-
-        <div class="group">
-          <label>5. 浮水印位置</label>
+          <label>4. 浮水印調整</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 10px">
+            <select id="logoSize">
+              <option value="0.10">小 (10%)</option>
+              <option value="0.20" selected>中 (20%)</option>
+              <option value="0.30">大 (30%)</option>
+            </select>
+          </div>
           <select id="logoPos">
             <option value="lb" selected>左下角 (Left Bottom)</option>
             <option value="rb">右下角 (Right Bottom)</option>
             <option value="lt">左上角 (Left Top)</option>
             <option value="rt">右上角 (Right Top)</option>
           </select>
-          <div class="tips">* 系統會確保浮水印不被黑邊蓋住</div>
         </div>
 
         <button class="btn-download" onclick="downloadResult()">
-          下載圖片 (Download)
+          下載成果
         </button>
       </div>
 
       <div class="preview">
         <canvas id="editorCanvas"></canvas>
-        <p id="statusMsg" style="margin-top: 10px; color: #666">
-          等待圖片上傳...
+        <p
+          id="statusMsg"
+          style="margin-top: 15px; color: #666; font-size: 0.9rem"
+        >
+          等待圖片匯入...
         </p>
       </div>
     </div>
 
+    <footer>&copy; 2025 JustPlayTogether. All rights reserved.</footer>
+
     <script>
       const canvas = document.getElementById("editorCanvas");
       const ctx = canvas.getContext("2d");
+
+      // 狀態變數
       let imgObj = null;
       let logoObj = null;
+      let currentLogoSrc = "logo1.png"; // 預設 Logo
 
-      // 監聽所有操作
+      // 拖曳相關變數
+      let isDragging = false;
+      let startX, startY;
+      let panX = 0; // 圖片水平位移
+      let panY = 0; // 圖片垂直位移
+      // 限制拖曳範圍用
+      let minPanX, maxPanX, minPanY, maxPanY;
+
+      // --- 初始化事件監聽 ---
+
+      // 1. 圖片上傳
       document
         .getElementById("uploadImg")
         .addEventListener("change", function (e) {
@@ -250,102 +116,197 @@
           reader.onload = function (evt) {
             imgObj = new Image();
             imgObj.onload = function () {
+              // 重置拖曳位置到正中間
+              panX = 0;
+              panY = 0;
               render();
               document.getElementById(
                 "statusMsg"
-              ).innerText = `原始解析度: ${imgObj.width} x ${imgObj.height}`;
+              ).innerText = `解析度: ${imgObj.width} x ${imgObj.height} | 提示：按住畫面可拖曳圖片位置`;
             };
             imgObj.src = evt.target.result;
           };
           reader.readAsDataURL(file);
         });
 
-      document
-        .getElementById("uploadLogo")
-        .addEventListener("change", function (e) {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = function (evt) {
-            logoObj = new Image();
-            logoObj.onload = render;
-            logoObj.src = evt.target.result;
-          };
-          reader.readAsDataURL(file);
+      // 2. 切換 Logo 樣式 (讀取本地檔案)
+      document.querySelectorAll('input[name="logoStyle"]').forEach((el) => {
+        el.addEventListener("change", (e) => {
+          currentLogoSrc = e.target.value;
+          loadLogo();
         });
-
-      const inputs = ["ratio", "logoSize", "logoPos"];
-      // 為 Radio buttons 綁定事件
-      document.querySelectorAll('input[name="ratio"]').forEach((el) => {
-        el.addEventListener("change", render);
       });
-      // 為 Selects 綁定事件
+
+      function loadLogo() {
+        logoObj = new Image();
+        logoObj.onload = render;
+        logoObj.onerror = function () {
+          // 如果找不到圖片，就不顯示 Logo，避免報錯卡死
+          logoObj = null;
+          console.warn(
+            "找不到 Logo 檔案，請確認 logo1.png 或 logo2.png 是否存在"
+          );
+          render();
+        };
+        logoObj.src = currentLogoSrc;
+      }
+
+      // 3. 其他控制項變化
+      document
+        .querySelectorAll('input[name="ratio"]')
+        .forEach((el) => el.addEventListener("change", render));
       document.getElementById("logoSize").addEventListener("change", render);
       document.getElementById("logoPos").addEventListener("change", render);
 
-      function render() {
+      // --- 拖曳功能實作 ---
+      canvas.addEventListener("mousedown", (e) => {
         if (!imgObj) return;
+        isDragging = true;
+        startX = e.offsetX;
+        startY = e.offsetY;
+        canvas.style.cursor = "grabbing";
+      });
 
-        // 1. 設定畫布大小：固定為 16:9 的比例 (基於原圖寬度)
-        // 這樣可以保證輸出始終是標準螢幕比例
+      canvas.addEventListener("mousemove", (e) => {
+        if (!isDragging || !imgObj) return;
+
+        // 計算滑鼠移動距離
+        const dx = e.offsetX - startX;
+        const dy = e.offsetY - startY;
+
+        // 更新位移
+        panX += dx;
+        panY += dy;
+
+        // 更新起始點
+        startX = e.offsetX;
+        startY = e.offsetY;
+
+        render();
+      });
+
+      window.addEventListener("mouseup", () => {
+        if (isDragging) {
+          isDragging = false;
+          canvas.style.cursor = "grab";
+        }
+      });
+
+      // --- 核心渲染函式 ---
+      function render() {
+        if (!imgObj) {
+          // 尚未上傳圖片時，畫一個空的黑色背景
+          canvas.width = 800;
+          canvas.height = 450;
+          ctx.fillStyle = "#111";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#333";
+          ctx.font = "20px Arial";
+          ctx.textAlign = "center";
+          ctx.fillText("請上傳圖片", 400, 225);
+          return;
+        }
+
+        // 1. 設定畫布尺寸 (固定 16:9 基底)
         const w = imgObj.width;
         const h = Math.round((w * 9) / 16);
         canvas.width = w;
         canvas.height = h;
 
-        // 清除背景 (預設黑色)
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, w, h);
-
-        // 2. 處理圖片裁切與繪製
-        // 判斷當前選擇的模式
+        // 2. 計算模式與遮罩
         const mode = document.querySelector(
           'input[name="ratio"]:checked'
         ).value;
-        let viewHeight = h; // 可視區域高度
-        let blackBarH = 0; // 黑邊高度
+        let viewHeight = h;
+        let blackBarH = 0;
 
         if (mode === "2.35:1") {
-          // 電影模式：中間的可視高度變小
           viewHeight = Math.round(w / 2.35);
           blackBarH = (h - viewHeight) / 2;
         }
 
-        // 繪製底圖 (Object-Fit: Cover)
-        // 我們將圖片繪製在中間的 viewHeight 區域，多餘的自動裁切
-        drawCover(imgObj, 0, blackBarH, w, viewHeight);
+        // 3. 計算圖片縮放與繪製位置 (Cover 邏輯 + 拖曳偏移)
+        const imgRatio = imgObj.width / imgObj.height;
+        // 這裡的 targetRatio 我們參考的是「可視區域」，但在拖曳邏輯上，我們比較簡單的做法是
+        // 先讓圖片縮放到「至少填滿寬度」或「至少填滿高度」，然後允許使用者移動
 
-        // 確保黑邊是純黑的 (再次覆蓋上下，修整邊緣)
-        if (blackBarH > 0) {
-          ctx.fillStyle = "black";
-          ctx.fillRect(0, 0, w, blackBarH); // 上黑邊
-          ctx.fillRect(0, h - blackBarH, w, blackBarH); // 下黑邊
+        // 我們採用：以寬度填滿為優先，若圖片不夠高則放大到高度填滿
+        let renderW = w;
+        let renderH = w / imgRatio;
+
+        if (renderH < viewHeight) {
+          // 如果縮放後的圖片高度比可視區還小，那就要改成「依高度填滿」
+          renderH = viewHeight;
+          renderW = renderH * imgRatio;
         }
 
-        // 3. 繪製浮水印
+        // 計算初始置中位置 (當 panX, panY 為 0 時)
+        const initialX = (w - renderW) / 2;
+        const initialY = blackBarH + (viewHeight - renderH) / 2;
+
+        // --- 限制拖曳範圍 (Constraint) ---
+        // 邏輯：圖片邊緣不能跑進可視區內部 (不能露出背景黑底)
+        // X軸限制
+        // 最左邊：renderW 右側剛好貼齊畫布右側 -> panX + initialX + renderW >= w
+        // 最右邊：renderW 左側剛好貼齊畫布左側 -> panX + initialX <= 0
+
+        // 簡化計算：
+        // 當前繪製的實際 X = initialX + panX
+        // 當前繪製的實際 Y = initialY + panY
+
+        // 修正 Pan 值以確保不留白
+        const currentX = initialX + panX;
+        const currentY = initialY + panY;
+
+        // X 軸邊界檢查
+        if (currentX > 0) panX = -initialX; // 不能往右拉過頭
+        if (currentX + renderW < w) panX = w - renderW - initialX; // 不能往左拉過頭
+
+        // Y 軸邊界檢查 (需考慮上下黑邊)
+        // 頂部邊界：圖片頂部不能低於上黑邊 (currentY <= blackBarH)
+        // 底部邊界：圖片底部不能高於下黑邊 (currentY + renderH >= h - blackBarH)
+
+        const checkedY = initialY + panY;
+        if (checkedY > blackBarH) panY = blackBarH - initialY;
+        if (checkedY + renderH < h - blackBarH)
+          panY = h - blackBarH - renderH - initialY;
+
+        // 4. 繪製圖片
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, w, h); // 清空背景
+
+        // 繪製
+        ctx.drawImage(
+          imgObj,
+          initialX + panX,
+          initialY + panY,
+          renderW,
+          renderH
+        );
+
+        // 5. 繪製黑邊 (蓋在圖片上面，這樣拖曳時圖片會像是「滑進」黑邊裡)
+        if (blackBarH > 0) {
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, w, blackBarH); // 上
+          ctx.fillRect(0, h - blackBarH, w, blackBarH); // 下
+        }
+
+        // 6. 繪製 Logo
         if (logoObj) {
           const scale = parseFloat(document.getElementById("logoSize").value);
           const logoW = w * scale;
           const logoH = logoObj.height * (logoW / logoObj.width);
-
-          // 設定邊距
-          const padding = w * 0.02; // 寬度的 2%
+          const padding = w * 0.02;
 
           let lx, ly;
           const pos = document.getElementById("logoPos").value;
 
-          // X 軸位置
-          if (pos.includes("l")) lx = padding; // 左
-          else lx = w - logoW - padding; // 右
+          if (pos.includes("l")) lx = padding;
+          else lx = w - logoW - padding;
 
-          // Y 軸位置 (關鍵：要避開黑邊)
-          // 上方位置 = 上黑邊高度 + padding
-          // 下方位置 = 總高度 - 下黑邊高度 - Logo高度 - padding
           if (pos.includes("t")) {
-            // Top
             ly = blackBarH + padding;
           } else {
-            // Bottom
             ly = h - blackBarH - logoH - padding;
           }
 
@@ -356,39 +317,9 @@
         }
       }
 
-      // 輔助功能：模擬 CSS 的 background-size: cover
-      function drawCover(img, x, y, w, h) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(x, y, w, h);
-        ctx.clip(); // 限制繪圖區域
-
-        const imgRatio = img.width / img.height;
-        const targetRatio = w / h;
-        let renderW, renderH, renderX, renderY;
-
-        if (imgRatio > targetRatio) {
-          // 圖片比較寬 -> 以高度為基準，裁切左右
-          renderH = h;
-          renderW = h * imgRatio;
-          renderY = 0;
-          renderX = (w - renderW) / 2;
-        } else {
-          // 圖片比較高 -> 以寬度為基準，裁切上下
-          renderW = w;
-          renderH = w / imgRatio;
-          renderX = 0;
-          renderY = (h - renderH) / 2;
-        }
-
-        // 注意：這裡的繪製座標要加上原本的位移 x, y
-        ctx.drawImage(img, x + renderX, y + renderY, renderW, renderH);
-        ctx.restore();
-      }
-
       function downloadResult() {
         if (!imgObj) {
-          alert("還沒有上傳圖片喔！");
+          alert("請先上傳圖片");
           return;
         }
         const link = document.createElement("a");
@@ -396,10 +327,13 @@
           .toISOString()
           .slice(0, 19)
           .replace(/[-T:]/g, "");
-        link.download = `FF14_Cinematic_${time}.png`;
-        link.href = canvas.toDataURL("image/png", 1.0); // 最高品質
+        link.download = `JustPlayTogether_${time}.png`;
+        link.href = canvas.toDataURL("image/png", 1.0);
         link.click();
       }
+
+      // 頁面載入時嘗試載入一次預設 Logo
+      window.onload = loadLogo;
     </script>
   </body>
 </html>
